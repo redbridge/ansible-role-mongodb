@@ -12,6 +12,7 @@
     host_type: "{{ item.host_type|default('replica') }}"
     hidden: "{{ item.hidden|default(false) }}"
     priority: "{{ item.priority|default(1.0) }}"
+    slave_delay: "{{ item.slave_delay|default(0) }}"
   when: mongodb_security_authorization == 'enabled'
   with_items:
     - "{{ mongodb_replication_params|default([]) }}"
@@ -26,6 +27,7 @@
     host_type: "{{ item.host_type|default('replica') }}"
     hidden: "{{ item.hidden|default(false) }}"
     priority: "{{ item.priority|default(1.0) }}"
+    slave_delay: "{{ item.slave_delay|default(0) }}"
   when: mongodb_security_authorization == 'disabled'
   with_items:
     - "{{ mongodb_replication_params|default([]) }}"
