@@ -1,0 +1,7 @@
+---
+
+mongodb_replication_params:
+  - host_name: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
+    hidden: true
+    slave_delay: 120
+    priority: 0

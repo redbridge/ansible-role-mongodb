@@ -7,6 +7,7 @@ mongo1		ansible_connection=docker ansible_user=root ansible_python_interpreter=p
 [mongo_replicas]
 mongo2		ansible_connection=docker ansible_user=root ansible_python_interpreter=python
 mongo3		ansible_connection=docker ansible_user=root ansible_python_interpreter=python
+mongo4		ansible_connection=docker ansible_user=root ansible_python_interpreter=python
 
 [mongo:children]
 mongo_master

@@ -19,7 +19,7 @@ ansible-playbook -i tests/hosts tests/site.yml -e target=mongo1 -e mongodb_packa
     grep -q 'changed=0.*failed=0' && \
     (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
 # Delete all containers
-docker kill mongo{1,2,3} && docker rm mongo{1,2,3}
+docker kill mongo{1,2,3,4} && docker rm mongo{1,2,3,4}
 
 # Test 2
 echo "ansible-playbook -i tests/hosts tests/site.yml -e target=mongo1 -e image_name=${DISTRIBUTION}:${DIST_VERSION} -e mongodb_package=${package} -e mongodb_version=${MONGODB_VERSION} -e mongodb_security_authorization='enabled'"
@@ -29,7 +29,7 @@ ansible-playbook -i tests/hosts tests/site.yml -e target=mongo1 -e image_name=${
     | grep -q 'changed=0.*failed=0' \
     && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
 # Delete all containers
-docker kill mongo{1,2,3} && docker rm mongo{1,2,3}
+docker kill mongo{1,2,3,4} && docker rm mongo{1,2,3,4}
 
 # Test 3
 echo "ansible-playbook -i tests/hosts tests/site.yml -e target=mongo -e image_name=${DISTRIBUTION}:${DIST_VERSION} -e mongodb_package=${package} -e mongodb_version=${MONGODB_VERSION} -e mongodb_replication_replset='testrs'"
@@ -39,7 +39,7 @@ ansible-playbook -i tests/hosts tests/site.yml -e target=mongo -e image_name=${D
     | grep -q 'changed=0.*failed=0' \
     && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)
 # Delete all containers
-docker kill mongo{1,2,3} && docker rm mongo{1,2,3}
+docker kill mongo{1,2,3,4} && docker rm mongo{1,2,3,4}
 
 # Test 4
 echo "ansible-playbook -i tests/hosts tests/site.yml -e target=mongo -e image_name=${DISTRIBUTION}:${DIST_VERSION} -e mongodb_package=${package} -e mongodb_version=${MONGODB_VERSION} -e mongodb_replication_replset='testrs' -e mongodb_security_authorization='enabled'"
