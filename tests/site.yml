@@ -16,6 +16,52 @@
         - mongo1
         - mongo2
         - mongo3
+        - mongo4
+
+- hosts: mongo
+  become: no
+  gather_facts: no
+  tasks:
+
+    - name: install pip
+      package:
+        name: python2-pip
+        
+    - name: install pyOpenSSL
+      pip:
+        name: pyOpenSSL
+
+    - name: create private key
+      openssl_privatekey:
+        path: "/etc/ssl/mongodb.key"
+
+    - name: create certificate csr
+      openssl_csr:
+        common_name: "mongodb"
+        path: "/etc/ssl/mongodb.csr"
+        privatekey_path: "/etc/ssl/mongodb.key"
+
+    - name: create certificates
+      openssl_certificate:
+        path: "/etc/ssl/mongodb.crt"
+        csr_path: "/etc/ssl/mongodb.csr"
+        privatekey_path: "/etc/ssl/mongodb.key"
+        provider: selfsigned
+
+    - name: cat certificates
+      shell: "cat mongodb.crt mongodb.key > mongodb.pem"
+      args:
+        chdir: /etc/ssl
+        creates: /etc/ssl/mongodb.pem
+
+    - name: tweak perms
+      file:
+        path: /etc/ssl/mongodb.pem
+        mode: a+r
+
+    # - name: stop here
+    #   fail:
+    #     msg: stop here
 
 - hosts: mongo
   become: no
@@ -28,12 +74,12 @@
   become: no
   gather_facts: yes
   roles:
-    - role: greendayonfire.mongodb
+    - role: mongodb
       when: "'mongo_master' in group_names"
 
 - hosts: "{{ target | default('mongo') }}"
   become: no
   gather_facts: yes
   roles:
-    - role: greendayonfire.mongodb
+    - role: mongodb
       when: "'mongo_replicas' in group_names"
